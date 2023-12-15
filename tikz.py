@@ -10,12 +10,13 @@ class tikzTokenizer:
                 for d in digits:
                     self.vocab.append(l + s + d)
         self.vocab += ['{', '}', ',', '->']
-        self.vocab += ['<pad>', '<eos>', '<unk>']
+        self.vocab += ['<pad>', '<s>', '</s>', '<unk>']
         self.token2idx = {t: i for i, t in enumerate(self.vocab)}
         self.vocab_size = len(self.vocab)
 
         self.pad_token_id = self.token2idx['<pad>']
-        self.eos_token_id = self.token2idx['<eos>']
+        self.eos_token_id = self.token2idx['</s>']
+        self.bos_token_id = self.token2idx['<s>']
         self.unk_token_id = self.token2idx['<unk>']
         self.max_length = max_seq_length
 
@@ -29,7 +30,7 @@ class tikzTokenizer:
         """
         Convert list of lists of tokens to list of lists of ids.
         """
-        return [[self[t] for t in s] + [self.eos_token_id] for s in sents]
+        return [[self.bos_token_id] + [self[t] for t in s] + [self.eos_token_id] for s in sents]
     
     def pad_sents(self, sents):
         sents_padded = []
