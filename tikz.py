@@ -22,6 +22,9 @@ class tikzTokenizer:
     def __getitem__(self, token):
         return self.token2idx.get(token, self.unk_token_id)
 
+    def save_pretrained(self, *args, **kwargs):
+        pass
+
     def tokens2indices(self, sents):
         """
         Convert list of lists of tokens to list of lists of ids.

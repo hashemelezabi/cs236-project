@@ -180,9 +180,9 @@ def train(config):
 
     trainer = pl.Trainer(
         num_nodes=config.get("num_nodes", 1),
-        devices=1,
-        # strategy="ddp_find_unused_parameters_true",
-        accelerator="cpu",
+        devices="auto",
+        strategy="ddp_find_unused_parameters_true",
+        accelerator="auto",
         # plugins=[SLURMEnvironment(auto_requeue=False)],
         max_epochs=config.max_epochs,
         max_steps=config.max_steps,
@@ -191,7 +191,7 @@ def train(config):
         limit_val_batches=config.val_batches,
         gradient_clip_val=config.gradient_clip_val,
         log_every_n_steps=15,
-        precision="bf16-mixed",
+        precision="16-mixed",
         num_sanity_val_steps=0,
         logger=logger,
         callbacks=[
